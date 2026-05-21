@@ -1,54 +1,54 @@
-# Bozor-Analitika AI Services
+# Bozor-Analitika AI Xizmatlari
 
-Этот модуль содержит бэкенд на **FastAPI**, который служит посредником (proxy) для интеграции с **Gemini API**. Он обрабатывает запросы от фронтенда, дополняет их системным контекстом и получает интеллектуальные ответы для пользователей.
+Ushbu modul **FastAPI** asosida qurilgan backendni o‘z ichiga oladi, u **Gemini API** bilan integratsiya qilish uchun vositachi (proxy) bo‘lib xizmat qiladi. U frontenddan kelayotgan so‘rovlarni qabul qiladi, ularni tizimli kontekst bilan boyitadi va foydalanuvchilar uchun aqlli javoblarni oladi.
 
-## Основные возможности
-- **Proxy для Gemini:** Передача запросов к Google Gemini API.
-- **Инъекция контекста:** Дополнение пользовательских запросов контекстом о рынке (данные компаний, тарифы, FAQ, акции).
-- **REST API:** Простой интерфейс для общения с AI-ассистентом.
+## Asosiy imkoniyatlar
+- **Gemini uchun Proxy:** Google Gemini API'siga so‘rovlarni yo‘naltirish.
+- **Kontekst inyeksiyasi:** Foydalanuvchi so‘rovlarini bozor haqidagi kontekst (kompaniyalar, tariflar, FAQ, aksiyalar) bilan to‘ldirish.
+- **REST API:** AI-yordamchi bilan muloqot qilish uchun oddiy interfeys.
 
-## Установка и запуск
+## O‘rnatish va ishga tushirish
 
-### 1. Подготовка окружения
-Убедитесь, что у вас установлен Python 3.10+. В папке `ai-services/` создайте виртуальное окружение:
+### 1. Muhitni tayyorlash
+Python 3.10+ o‘rnatilganligiga ishonch hosil qiling. `ai-services/` papkasida virtual muhit yarating:
 
 ```bash
 python -m venv venv
-# Активация (Windows)
+# Faollashtirish (Windows)
 .\venv\Scripts\activate
 ```
 
-### 2. Установка зависимостей
+### 2. Bog‘liqliklarni (dependencies) o‘rnatish
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Настройка переменных окружения
-Создайте файл `.env` в корне проекта или внутри `ai-services/` и добавьте туда ваш ключ API:
+### 3. Muhit o‘zgaruvchilarini sozlash
+Loyihaning ildiz papkasida yoki `ai-services/` ichida `.env` faylini yarating va u yerga API kalitingizni qo‘shing:
 
 ```text
-GEMINI_API_KEY=ваш_api_key_от_google_ai_studio
+GEMINI_API_KEY=google_ai_studio_dan_olingan_api_kalitingiz
 ```
 
-### 4. Запуск сервера
+### 4. Serverni ishga tushirish
 ```bash
 uvicorn main:app --reload --port 5000
 ```
-Сервер будет доступен по адресу `http://127.0.0.1:5000`.
+Server `http://127.0.0.1:5000` manzilida ishga tushadi.
 
-## API Эндпоинты
+## API Endpoint'lar
 
-- **GET `/status`**: Проверка работоспособности сервера.
-- **POST `/api/chat`**: Основной эндпоинт для отправки сообщений.
+- **GET `/status`**: Serverning ishlash holatini tekshirish.
+- **POST `/api/chat`**: AI bilan muloqot qilish uchun asosiy endpoint.
     - **Body**:
         ```json
         {
           "message": "Agrobankning narxi qanday?",
-          "context": "Контекстные данные для AI..."
+          "context": "AI uchun kontekst ma'lumotlari..."
         }
         ```
 
-## Технологический стек
-- **FastAPI**: Высокопроизводительный фреймворк для API.
-- **Google Generative AI SDK**: Официальная библиотека для Gemini.
-- **Pydantic**: Валидация данных запросов.
+## Texnologik stek
+- **FastAPI**: API uchun yuqori unumli freymvork.
+- **Google Generative AI SDK**: Gemini bilan ishlash uchun rasmiy kutubxona.
+- **Pydantic**: So‘rov ma'lumotlarini validatsiya qilish.
