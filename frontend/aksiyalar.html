@@ -107,6 +107,21 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-6">
+            <!-- Список банков -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Bank aksiyalari</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onclick="window.location.href='./bozor.html?bank=agrobank'" class="p-4 bg-white border border-gray-200 rounded-xl hover:shadow-lg transition flex flex-col items-center">
+                        <span class="font-bold text-gray-700">Agrobank</span>
+                        <span class="text-xs text-green-500 font-medium mt-1">Chartni ko'rish</span>
+                    </button>
+                    <button onclick="window.location.href='./bozor.html?bank=sqb'" class="p-4 bg-white border border-gray-200 rounded-xl hover:shadow-lg transition flex flex-col items-center">
+                        <span class="font-bold text-gray-700">SQB</span>
+                        <span class="text-xs text-green-500 font-medium mt-1">Chartni ko'rish</span>
+                    </button>
+                </div>
+            </div>
+
             <div id="cardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             </div>
             <div id="emptyState" class="hidden flex-col items-center justify-center h-full text-center py-20">
