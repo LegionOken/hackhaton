@@ -202,7 +202,8 @@
             const loadId = appendMessage('ai', 'Tahlil qilmoqda...', true);
 
             try {
-                const response = await fetch('/api/chat', {
+                // Подключение к FastAPI бэкенду
+                const response = await fetch('http://127.0.0.1:5000/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -217,11 +218,11 @@
                 if (data.reply) {
                     appendMessage('ai', data.reply);
                 } else {
-                    appendMessage('ai', data.error || 'Tizimda xatolik yuz berdi. Qayta urinib ko\'ring.');
+                    appendMessage('ai', data.detail || 'Tizimda xatolik yuz berdi.');
                 }
             } catch (err) {
                 document.getElementById(loadId)?.remove();
-                appendMessage('ai', 'Serverga ulanishda xatolik. Server ishlayotganiga ishonch hosil qiling.');
+                appendMessage('ai', 'Server bilan bog\'lanishda xatolik. Server 5000-portda ishlayotganligiga ishonch hosil qiling.');
                 console.error(err);
             }
         }
