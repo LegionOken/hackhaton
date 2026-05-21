@@ -1,268 +1,702 @@
+
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Assistent - Eco Us</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AI Assistent — Eco Us</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
     <style>
-        body { user-select: none; -webkit-user-select: none; }
-        #chatInput, #chatMessages, .chat-output { user-select: text; -webkit-user-select: text; }
-        .gold-text { color: #D4AF37; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); }
-        .sidebar-btn { transition: all 0.2s ease-in-out; }
-        .sidebar-btn:hover { background-color: #f3f4f6; transform: scale(1.05); }
-        .chat-output p { margin-bottom: 6px; }
-        .chat-output ul { list-style-type: disc; margin-left: 20px; }
-        .chat-output table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 12px; }
-        .chat-output td, .chat-output th { border: 1px solid #e5e7eb; padding: 4px 8px; text-align: left; }
-        .chat-output th { background: #f9fafb; font-weight: 600; }
+        :root {
+            --gold:        #C9A84C;
+            --gold-light:  #E8D5A0;
+            --gold-dim:    #8a6e2f;
+            --ink:         #111318;
+            --surface:     #F7F6F2;
+            --panel:       #FFFFFF;
+            --border:      #E5E3DC;
+            --muted:       #9B9690;
+            --accent:      #2E6B4F;
+            --accent-soft: #EAF2ED;
+            --user-bg:     #1C3328;
+            --user-text:   #E8F3EC;
+            --radius-lg:   16px;
+            --radius-md:   10px;
+            --radius-sm:   6px;
+            --shadow-sm:   0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+            --shadow-md:   0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+            --font-body:   'DM Sans', sans-serif;
+            --font-mono:   'DM Mono', monospace;
+            --font-serif:  'Playfair Display', serif;
+            --sidebar-w:   72px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            height: 100%;
+            font-family: var(--font-body);
+            background: var(--surface);
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+        }
+
+        input, textarea, .selectable { user-select: text; -webkit-user-select: text; }
+
+        /* ── Layout ────────────────────────────────── */
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── Sidebar ───────────────────────────────── */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 16px;
+            gap: 0;
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+            line-height: 1.15;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            padding: 0 8px 24px;
+            border-bottom: 1px solid var(--border);
+            width: 100%;
+            text-align: center;
+        }
+        .logo span { display: block; font-size: 13px; font-weight: 500; color: var(--gold-dim); }
+
+        .nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 16px 8px;
+            width: 100%;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 56px;
+            padding: 10px 6px;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            transition: background .15s, border-color .15s, color .15s;
+            color: var(--muted);
+        }
+        .nav-item:hover { background: var(--surface); color: var(--ink); }
+        .nav-item.active {
+            background: var(--accent-soft);
+            border-color: rgba(46,107,79,.15);
+            color: var(--accent);
+        }
+        .nav-item svg { width: 20px; height: 20px; stroke-width: 1.6; }
+        .nav-label {
+            font-size: 9.5px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        .ai-badge {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+        }
+
+        .theme-btn {
+            margin-top: auto;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            padding: 10px;
+            border-radius: 50%;
+            transition: color .15s, background .15s;
+            display: flex;
+        }
+        .theme-btn:hover { color: var(--ink); background: var(--surface); }
+        .theme-btn svg { width: 18px; height: 18px; }
+
+        /* ── Main ──────────────────────────────────── */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── Header ────────────────────────────────── */
+        .topbar {
+            height: 56px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            flex-shrink: 0;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 9px;
+            border-radius: 100px;
+            background: #F0EFEB;
+            color: var(--muted);
+            transition: background .3s, color .3s;
+        }
+        .status-pill.ready {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: .7;
+        }
+        .status-pill.loading .status-dot {
+            animation: pulse-dot 1.2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: .3; transform: scale(.8); }
+            50%       { opacity: 1;  transform: scale(1.1); }
+        }
+
+        .clear-btn {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+            background: none;
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: color .15s, border-color .15s, background .15s;
+            font-family: var(--font-body);
+        }
+        .clear-btn:hover { color: var(--ink); border-color: #ccc; background: var(--surface); }
+
+        /* ── Messages ──────────────────────────────── */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+        .messages::-webkit-scrollbar { width: 4px; }
+        .messages::-webkit-scrollbar-track { background: transparent; }
+        .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .msg-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            animation: msg-in .25s ease both;
+        }
+        .msg-row.user { flex-direction: row-reverse; }
+
+        @keyframes msg-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .avatar {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 8.5px;
+            font-weight: 500;
+            flex-shrink: 0;
+            border: 1px solid rgba(46,107,79,.12);
+        }
+
+        .bubble {
+            max-width: min(72%, 560px);
+            padding: 12px 16px;
+            font-size: 13.5px;
+            line-height: 1.65;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .bubble.ai {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+        .bubble.user {
+            background: var(--user-bg);
+            color: var(--user-text);
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Rich content inside bubbles */
+        .bubble strong { font-weight: 600; }
+        .bubble em { font-style: italic; color: var(--muted); }
+        .bubble br + br { display: block; content: ''; margin-top: 4px; }
+        .bubble ul { list-style: disc; margin-left: 18px; margin-top: 6px; }
+        .bubble li { margin-bottom: 3px; }
+        .bubble table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 8px 0;
+            font-size: 12px;
+            font-family: var(--font-mono);
+        }
+        .bubble td, .bubble th {
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            text-align: left;
+        }
+        .bubble th { background: var(--surface); font-weight: 600; }
+
+        /* Loading animation */
+        .typing-dots {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+            height: 18px;
+        }
+        .typing-dots span {
+            width: 5px; height: 5px;
+            background: var(--muted);
+            border-radius: 50%;
+            animation: dot-bounce .9s ease-in-out infinite;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: .15s; }
+        .typing-dots span:nth-child(3) { animation-delay: .3s; }
+        @keyframes dot-bounce {
+            0%, 80%, 100% { transform: translateY(0); opacity: .4; }
+            40%            { transform: translateY(-5px); opacity: 1; }
+        }
+
+        /* ── Input bar ─────────────────────────────── */
+        .input-area {
+            padding: 16px 24px 20px;
+            background: var(--panel);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .input-wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px 6px 6px 18px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .input-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(46,107,79,.08);
+        }
+
+        #chatInput {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            color: var(--ink);
+            caret-color: var(--accent);
+        }
+        #chatInput::placeholder { color: var(--muted); }
+
+        .send-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background .2s, transform .1s;
+            background: var(--border);
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        .send-btn:not(:disabled) {
+            background: var(--accent);
+            color: #fff;
+        }
+        .send-btn:not(:disabled):hover { background: #255c41; }
+        .send-btn:not(:disabled):active { transform: scale(.93); }
+        .send-btn:disabled { cursor: not-allowed; }
+        .send-btn svg { width: 15px; height: 15px; stroke-width: 2.2; }
+
+        /* ── Day divider ───────────────────────────── */
+        .day-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .day-divider::before, .day-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Dark mode ─────────────────────────────── */
+        .dark {
+            --ink:         #ECEBE5;
+            --surface:     #111318;
+            --panel:       #1A1D24;
+            --border:      #2A2D35;
+            --muted:       #6B6A65;
+            --accent-soft: #1A2E22;
+            --user-bg:     #1C3328;
+            --user-text:   #D4EAD9;
+            --shadow-sm:   0 1px 3px rgba(0,0,0,.3);
+            --shadow-md:   0 4px 12px rgba(0,0,0,.4);
+        }
     </style>
 </head>
-<body class="bg-gray-50 font-sans flex h-screen overflow-hidden">
+<body>
+<div class="app">
 
-    <aside class="w-28 bg-white border-r border-gray-200 flex flex-col items-center py-6 justify-between select-none z-10">
-        <div class="flex flex-col items-center w-full space-y-8">
-            <a href="./index.html"><div class="gold-text font-black text-2xl tracking-wider text-center px-2 leading-none cursor-pointer">Eco<br><span class="text-xl">Us</span></div></a>
-            <nav class="flex flex-col items-center w-full space-y-6">
-                <a href="./profil.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-gray-800"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg><span class="text-[11px] font-medium mt-1">Profil</span></button></a>
-                <a href="./AiAssistent.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-indigo-600 bg-indigo-50 border border-indigo-100 font-semibold shadow-sm"><div class="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center font-bold text-xs tracking-tighter">AI</div><span class="text-[11px] font-medium mt-1">AI Assistent</span></button></a>
-                <a href="./bozor.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-emerald-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg><span class="text-[11px] font-medium mt-1">Bozor</span></button></a>
-                <a href="./aksiyalar.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-amber-500"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg><span class="text-[11px] font-medium mt-1">Aksiyalar</span></button></a>
-            </nav>
-        </div>
-        <button class="sidebar-btn p-3 rounded-full text-gray-400 hover:text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827a1.125 1.125 0 0 1 .26 1.43l-1.297 2.247a1.125 1.125 0 0 1-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /></svg></button>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="./index.html" class="logo">Eco<span>Us</span></a>
+
+        <nav class="nav">
+            <a href="./profil.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                </svg>
+                <span class="nav-label">Profil</span>
+            </a>
+
+            <a href="./AiAssistent.html" class="nav-item active">
+                <div class="ai-badge">AI</div>
+                <span class="nav-label">Assistent</span>
+            </a>
+
+            <a href="./aksiyalar.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+                </svg>
+                <span class="nav-label">Aksiyalar</span>
+            </a>
+        </nav>
+
+        <button class="theme-btn" onclick="toggleDarkMode()" title="Mavzuni o'zgartirish">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/>
+            </svg>
+        </button>
     </aside>
 
-    <main class="flex-1 flex flex-col bg-gray-50 overflow-hidden relative">
-        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
-            <div class="flex items-center space-x-3">
-                <h2 class="font-bold text-base text-indigo-700">Eco Us AI Assistent</h2>
-                <span id="dataStatus" class="text-xs bg-gray-100 text-gray-500 px-2.5 py-0.5 rounded-full">Ma'lumot yuklanmoqda...</span>
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <span class="topbar-title">Eco Us AI Assistent</span>
+                <span id="dataStatus" class="status-pill loading">
+                    <span class="status-dot"></span>
+                    Yuklanmoqda
+                </span>
             </div>
-            <button onclick="clearChat()" class="text-xs text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition">Tozalash</button>
+            <button class="clear-btn" onclick="clearChat()">Tozalash</button>
         </header>
 
-        <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
-            <div class="flex items-start">
-                <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs mr-3 flex-shrink-0">AI</div>
-                <div class="bg-white p-3.5 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 max-w-[80%] text-sm text-gray-800 chat-output">
-                    Salom! Men Eco Us AI yordamchisiman. Saytdagi barcha ma'lumotlarni tahlil qila olaman:
-                    <br><br>
-                    📊 <strong>Bozor</strong> - kompaniyalar, tariflar, FAQ
-                    <br>
-                    🏷️ <strong>Aksiyalar</strong> - chegirma va aksiyalar
-                    <br>
-                    🌿 <strong>Eco Us</strong> - umumiy ma'lumot
-                    <br><br>
-                    <em>Menga savolingizni bering!</em>
+        <!-- Messages -->
+        <div id="chatMessages" class="messages selectable">
+            <div class="day-divider">Bugun</div>
+
+            <div class="msg-row ai">
+                <div class="avatar">AI</div>
+                <div class="bubble ai">
+                    Salom! Men <strong>Eco Us AI</strong> yordamchisiman.<br><br>
+                    Quyidagi bo'limlar bo'yicha savollaringizga javob bera olaman:<br><br>
+                    📊 <strong>Bozor</strong> — kompaniyalar, tariflar, FAQ<br>
+                    🏷️ <strong>Aksiyalar</strong> — chegirmalar va maxsus takliflar<br>
+                    🌿 <strong>Eco Us</strong> — platforma haqida umumiy ma'lumot<br><br>
+                    <em>Savolingizni yozing, yordam berishga tayyorman.</em>
                 </div>
             </div>
         </div>
 
-        <div class="border-t border-gray-200 bg-white p-4 flex-shrink-0">
-            <div class="flex items-center space-x-2 p-1.5 bg-gray-50 border border-gray-200 rounded-full max-w-4xl mx-auto shadow-sm">
-                <input type="text" id="chatInput" placeholder="Savolingizni yozing..." 
-                    class="flex-grow p-2.5 px-4 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-700 text-sm placeholder-gray-400 font-normal">
-                <button onclick="sendMessage()" id="sendBtn" disabled
-                    class="p-2.5 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center transition-all duration-300 cursor-not-allowed">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+        <!-- Input -->
+        <div class="input-area">
+            <div class="input-wrap">
+                <input
+                    type="text"
+                    id="chatInput"
+                    class="selectable"
+                    placeholder="Savolingizni yozing..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+                <button id="sendBtn" class="send-btn" disabled onclick="sendMessage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/>
                     </svg>
                 </button>
             </div>
         </div>
+
     </main>
+</div>
 
-    <script>
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const chatMessages = document.getElementById('chatMessages');
-        const dataStatus = document.getElementById('dataStatus');
+<script>
+    /* ── Elements ── */
+    const chatInput   = document.getElementById('chatInput');
+    const sendBtn     = document.getElementById('sendBtn');
+    const chatMessages= document.getElementById('chatMessages');
+    const dataStatus  = document.getElementById('dataStatus');
 
-        let siteContext = '';
+    let siteContext = '';
 
-        async function loadSiteData() {
-            let bozorData = null;
-            try {
-                const resp = await fetch('./parser/data/bozor_data.json');
-                bozorData = await resp.json();
-            } catch {
-                bozorData = getFallbackData();
-            }
+    /* ── Dark mode ── */
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.classList.add('dark');
+    }
+    function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    }
 
-            const promotions = getLocalPromotions();
-
-            siteContext = buildContext(bozorData, promotions);
-            dataStatus.textContent = 'Ma'lumot yuklandi';
-            dataStatus.classList.remove('bg-gray-100', 'text-gray-500');
-            dataStatus.classList.add('bg-emerald-100', 'text-emerald-700');
+    /* ── Data loading ── */
+    async function loadSiteData() {
+        let bozorData;
+        try {
+            const resp = await fetch('./parser/data/bozor_data.json');
+            if (!resp.ok) throw new Error();
+            bozorData = await resp.json();
+        } catch {
+            bozorData = getFallbackData();
         }
 
-        function getFallbackData() {
-            return {
-                site: { name: 'Bozor', description: 'Kompaniyalar va tariflar ma\'lumotlari', company: 'MULTIBROKER MChJ' },
-                companies: [
-                    { name: 'Agrobank', sector: 'Bank' }, { name: 'Kafolat', sector: 'Sug\'urta' },
-                    { name: 'SQB', sector: 'Bank' }, { name: 'Ipak Yo\'li', sector: 'Bank' },
-                    { name: 'UNG', sector: 'Neft va gaz' }, { name: 'UzEx', sector: 'Birja' },
-                    { name: 'Qizilqum sement', sector: 'Qurilish' }, { name: 'Aloqa', sector: 'Telekommunikatsiya' }
-                ],
-                plans: [
-                    { name: 'Investor', commissions: { stock_listed_buy_sell: '0.31%', broker_stock_listed: '0.63%', stamp_duty: '0.01%' } },
-                    { name: 'Treyder', commissions: { stock_listed_buy_sell: '0.31%', broker_stock_listed: '1%', stamp_duty: '0.01%' } },
-                    { name: 'Pro', commissions: { stock_listed_buy_sell: '0.31%', broker_stock_listed: '1%', stamp_duty: '0.01%' } }
-                ],
-                faq: [
-                    { category: 'Fond bozori', questions: [
-                        { q: 'Fond bozori nima?', a: 'Fond bozori - moliyaviy bozorning ajralmas qismi.' },
-                        { q: 'O\'zbekistonda fond birjasi bormi?', a: 'Ha, Toshkent RFB 1994-yilda tashkil etilgan.' }
-                    ]}
-                ]
-            };
-        }
+        const promotions = getLocalPromotions();
+        siteContext = buildContext(bozorData, promotions);
 
-        function getLocalPromotions() {
-            try { return JSON.parse(localStorage.getItem('eco_us_promotions')) || []; } catch { return []; }
-        }
+        dataStatus.textContent = 'Tayyor';
+        dataStatus.classList.remove('loading');
+        dataStatus.classList.add('ready');
+        const dot = document.createElement('span');
+        dot.className = 'status-dot';
+        dataStatus.prepend(dot);
+    }
 
-        function buildContext(bozor, promos) {
-            let ctx = `Siz Eco Us tizimining AI yordamchisisiz. Foydalanuvchilarga quyidagi ma'lumotlar asosida yordam bering:\n\n`;
+    function getFallbackData() {
+        return {
+            site: { name: 'Bozor', description: "Kompaniyalar va tariflar ma'lumotlari", company: 'MULTIBROKER MChJ' },
+            companies: [
+                { name: 'Agrobank',        sector: 'Bank' },
+                { name: 'Kafolat',         sector: "Sug'urta" },
+                { name: 'SQB',             sector: 'Bank' },
+                { name: "Ipak Yo'li",      sector: 'Bank' },
+                { name: 'UNG',             sector: 'Neft va gaz' },
+                { name: 'UzEx',            sector: 'Birja' },
+                { name: 'Qizilqum sement', sector: 'Qurilish' },
+                { name: 'Aloqa',           sector: 'Telekommunikatsiya' }
+            ],
+            plans: [
+                { name: 'Investor', commissions: { stock_listed_buy_sell: '0.31%', broker_stock_listed: '0.63%', stamp_duty: '0.01%' } },
+                { name: 'Treyder', commissions: { stock_listed_buy_sell: '0.31%', broker_stock_listed: '1%',    stamp_duty: '0.01%' } },
+                { name: 'Pro',     commissions: { stock_listed_buy_sell: '0.31%', broker_stock_listed: '1%',    stamp_duty: '0.01%' } }
+            ],
+            faq: [
+                { category: 'Fond bozori', questions: [
+                    { q: 'Fond bozori nima?',             a: 'Fond bozori — moliyaviy bozorning ajralmas qismi.' },
+                    { q: "O'zbekistonda fond birjasi bormi?", a: "Ha, Toshkent RFB 1994-yilda tashkil etilgan." }
+                ]}
+            ]
+        };
+    }
 
-            ctx += `=== BOZOR MA'LUMOTLARI ===\n`;
-            ctx += `Xizmat: ${bozor.site.name} - ${bozor.site.description}\n`;
-            ctx += `Kompaniya: ${bozor.site.company}\n`;
+    function getLocalPromotions() {
+        try { return JSON.parse(localStorage.getItem('eco_us_promotions')) || []; }
+        catch { return []; }
+    }
 
-            ctx += `\n--- Kompaniyalar (${(bozor.companies||[]).length} ta) ---\n`;
-            (bozor.companies||[]).forEach(c => { ctx += `- ${c.name} (${c.sector})\n`; });
+    function buildContext(bozor, promos) {
+        let ctx = "Siz Eco Us tizimining AI yordamchisisiz. Foydalanuvchilarga quyidagi ma'lumotlar asosida yordam bering:\n\n";
 
-            ctx += `\n--- Tarif rejalari (${(bozor.plans||[]).length} ta) ---\n`;
-            (bozor.plans||[]).forEach(p => {
-                ctx += `- ${p.name}: Listing aksiyalar komissiyasi ${p.commissions.stock_listed_buy_sell || 'N/A'}, Broker komissiyasi ${p.commissions.broker_stock_listed || 'N/A'}\n`;
-            });
+        ctx += "=== BOZOR MA'LUMOTLARI ===\n";
+        ctx += `Xizmat: ${bozor.site.name} — ${bozor.site.description}\n`;
+        ctx += `Kompaniya: ${bozor.site.company}\n`;
 
-            ctx += `\n--- FAQ (${(bozor.faq||[]).length} ta bo'lim) ---\n`;
-            (bozor.faq||[]).forEach(cat => {
-                ctx += `\n${cat.category}:\n`;
-                (cat.questions||[]).forEach(q => { ctx += `  Savol: ${q.q}\n  Javob: ${q.a}\n`; });
-            });
+        ctx += `\n--- Kompaniyalar (${(bozor.companies||[]).length} ta) ---\n`;
+        (bozor.companies||[]).forEach(c => { ctx += `- ${c.name} (${c.sector})\n`; });
 
-            ctx += `\n=== AKSIYALAR (${promos.length} ta) ===\n`;
-            if (promos.length === 0) {
-                ctx += `Hozircha aksiyalar mavjud emas.\n`;
-            } else {
-                promos.forEach(p => {
-                    const statusMap = { active: 'Faol', expired: 'Tugagan', upcoming: 'Kutilmoqda' };
-                    ctx += `- ${p.name} | Chegirma: ${p.discount || 0}% | Holati: ${statusMap[p.status] || p.status} | ${p.startDate || ''} - ${p.endDate || ''} | ${p.description || ''}\n`;
-                });
-            }
-
-            ctx += `\n=== ECO US SAYTI ===\n`;
-            ctx += `Eco Us - qishloq xo'jaligi va ekologiya sohasidagi loyihalar uchun dashboard. Sahifalar: Profil, AI Assistent, Bozor, Aksiyalar.\n`;
-
-            ctx += `\n\nMUHIM:\n`;
-            ctx += `- Savollarga faqat yuqoridagi ma'lumotlar asosida javob bering.\n`;
-            ctx += `- Agar ma'lumot yetarli bo'lmasa, "Kechirasiz, bu haqida ma'lumot topilmadi" deb ayting.\n`;
-            ctx += `- Javoblarni o'zbek tilida bering.\n`;
-            ctx += `- Tahlil qilayotganda raqamlar va foizlarni aniq ko'rsating.\n`;
-            ctx += `- Aksiyalarni tahlil qilishda ularning holati, chegirma foizi va muddatiga e'tibor bering.\n`;
-
-            return ctx;
-        }
-
-        chatInput.addEventListener('input', () => {
-            const val = chatInput.value.trim();
-            if (val.length > 0) {
-                sendBtn.disabled = false;
-                sendBtn.classList.remove('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
-                sendBtn.classList.add('bg-emerald-600', 'text-white', 'cursor-pointer');
-            } else {
-                sendBtn.disabled = true;
-                sendBtn.classList.remove('bg-emerald-600', 'text-white', 'cursor-pointer');
-                sendBtn.classList.add('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
-            }
+        ctx += `\n--- Tarif rejalari (${(bozor.plans||[]).length} ta) ---\n`;
+        (bozor.plans||[]).forEach(p => {
+            ctx += `- ${p.name}: listing aksiyalar komissiyasi ${p.commissions.stock_listed_buy_sell||'N/A'}, broker komissiyasi ${p.commissions.broker_stock_listed||'N/A'}\n`;
         });
 
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !sendBtn.disabled) {
-                sendMessage();
-            }
+        ctx += `\n--- FAQ (${(bozor.faq||[]).length} ta bo'lim) ---\n`;
+        (bozor.faq||[]).forEach(cat => {
+            ctx += `\n${cat.category}:\n`;
+            (cat.questions||[]).forEach(q => { ctx += `  Savol: ${q.q}\n  Javob: ${q.a}\n`; });
         });
 
-        async function sendMessage() {
-            const text = chatInput.value.trim();
-            if(!text) return;
-
-            appendMessage('user', text);
-
-            chatInput.value = '';
-            sendBtn.disabled = true;
-            sendBtn.classList.remove('bg-emerald-600', 'text-white', 'cursor-pointer');
-            sendBtn.classList.add('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
-
-            const loadId = appendMessage('ai', 'Tahlil qilmoqda...', true);
-
-            try {
-                // Подключение к FastAPI бэкенду
-                const response = await fetch('http://127.0.0.1:5000/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: text,
-                        context: siteContext
-                    })
-                });
-
-                const data = await response.json();
-                document.getElementById(loadId)?.remove();
-
-                if (data.reply) {
-                    appendMessage('ai', data.reply);
-                } else {
-                    appendMessage('ai', data.detail || 'Tizimda xatolik yuz berdi.');
-                }
-            } catch (err) {
-                document.getElementById(loadId)?.remove();
-                appendMessage('ai', 'Server bilan bog\'lanishda xatolik. Server 5000-portda ishlayotganligiga ishonch hosil qiling.');
-                console.error(err);
-            }
+        ctx += `\n=== AKSIYALAR (${promos.length} ta) ===\n`;
+        if (!promos.length) {
+            ctx += "Hozircha aksiyalar mavjud emas.\n";
+        } else {
+            const statusMap = { active: 'Faol', expired: 'Tugagan', upcoming: 'Kutilmoqda' };
+            promos.forEach(p => {
+                ctx += `- ${p.name} | Chegirma: ${p.discount||0}% | Holati: ${statusMap[p.status]||p.status} | ${p.startDate||''} – ${p.endDate||''} | ${p.description||''}\n`;
+            });
         }
 
-        function appendMessage(sender, msgText, isLoad = false) {
-            const id = 'm-' + Date.now();
-            const div = document.createElement('div');
-            div.id = id;
-            div.className = `flex ${sender === 'user' ? 'justify-end' : 'items-start'} fade-in`;
+        ctx += "\n=== ECO US SAYTI ===\n";
+        ctx += "Eco Us — qishloq xo'jaligi va ekologiya sohasidagi loyihalar uchun dashboard. Sahifalar: Profil, AI Assistent, Bozor, Aksiyalar.\n";
 
-            const avatar = sender === 'ai' ? `<div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs mr-3 flex-shrink-0">AI</div>` : '';
-            const bgClass = sender === 'user' ? 'bg-emerald-600 text-white rounded-2xl rounded-br-none' : 'bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-bl-none';
+        ctx += "\n\nMUHIM:\n";
+        ctx += "- Savollarga faqat yuqoridagi ma'lumotlar asosida javob bering.\n";
+        ctx += "- Agar ma'lumot yetarli bo'lmasa, \"Kechirasiz, bu haqida ma'lumot topilmadi\" deb ayting.\n";
+        ctx += "- Javoblarni o'zbek tilida bering.\n";
+        ctx += "- Tahlil qilayotganda raqamlar va foizlarni aniq ko'rsating.\n";
+        ctx += "- Aksiyalarni tahlil qilishda ularning holati, chegirma foizi va muddatiga e'tibor bering.\n";
 
-            div.innerHTML = `
-                ${avatar}
-                <div class="${bgClass} p-3.5 shadow-sm max-w-[80%] text-sm chat-output">
-                    ${isLoad ? '<span class="text-gray-400 animate-pulse">Tahlil qilmoqda...</span>' : msgText.replace(/\n/g, '<br>')}
-                </div>
-            `;
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            return id;
+        return ctx;
+    }
+
+    /* ── Input state ── */
+    function updateSendBtn() {
+        const hasText = chatInput.value.trim().length > 0;
+        sendBtn.disabled = !hasText;
+    }
+
+    chatInput.addEventListener('input', updateSendBtn);
+    chatInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !sendBtn.disabled) sendMessage();
+    });
+
+    /* ── Send ── */
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        appendMessage('user', text);
+        chatInput.value = '';
+        updateSendBtn();
+
+        const loadId = appendMessage('ai', '__loading__');
+
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, context: siteContext })
+            });
+            const data = await response.json();
+            removeMessage(loadId);
+            appendMessage('ai', data.reply || data.detail || 'Tizimda xatolik yuz berdi.');
+        } catch {
+            removeMessage(loadId);
+            appendMessage('ai', 'Server bilan bog\'lanishda xatolik. Server 5000-portda ishlayotganligiga ishonch hosil qiling.');
         }
+    }
 
-        function clearChat() {
-            chatMessages.innerHTML = `
-                <div class="flex items-start">
-                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs mr-3 flex-shrink-0">AI</div>
-                    <div class="bg-white p-3.5 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 max-w-[80%] text-sm text-gray-800 chat-output">
-                        Chat tozalandi. Yangi savol bering!
-                    </div>
-                </div>
-            `;
-        }
+    /* ── Render helpers ── */
+    function appendMessage(sender, text) {
+        const id = 'msg-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+        const row = document.createElement('div');
+        row.id = id;
+        row.className = `msg-row ${sender}`;
 
-        const style = document.createElement('style');
-        style.textContent = `.fade-in { animation: fadeIn 0.3s ease; } @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }`;
-        document.head.appendChild(style);
+        const avatar = sender === 'ai'
+            ? `<div class="avatar">AI</div>`
+            : '';
 
-        document.addEventListener('DOMContentLoaded', loadSiteData);
-    </script>
+        const content = text === '__loading__'
+            ? `<div class="typing-dots"><span></span><span></span><span></span></div>`
+            : text.replace(/\n/g, '<br>');
+
+        row.innerHTML = `
+            ${avatar}
+            <div class="bubble ${sender} selectable">${content}</div>
+        `;
+
+        chatMessages.appendChild(row);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return id;
+    }
+
+    function removeMessage(id) {
+        document.getElementById(id)?.remove();
+    }
+
+    /* ── Clear ── */
+    function clearChat() {
+        chatMessages.innerHTML = `
+            <div class="day-divider">Bugun</div>
+            <div class="msg-row ai">
+                <div class="avatar">AI</div>
+                <div class="bubble ai selectable">Chat tozalandi. Yangi savolingizni yozing.</div>
+            </div>
+        `;
+    }
+
+    /* ── Boot ── */
+    document.addEventListener('DOMContentLoaded', loadSiteData);
+</script>
 </body>
 </html>
