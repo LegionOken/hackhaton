@@ -1,9 +1,7 @@
 {
   "site": {
-    "name": "Jett",
-    "description": "O'zbekiston kompaniyalari aksiyalariga investitsiya xizmati",
-    "url": "https://jett.uz",
-    "appUrl": "https://app.jett.uz",
+    "name": "Bozor",
+    "description": "Kompaniyalar va tariflar ma'lumotlari",
     "company": "MULTIBROKER MChJ",
     "registered": "15.07.2022",
     "regNumber": "1162058",
