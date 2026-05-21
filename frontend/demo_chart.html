@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Chart - Bozor Analitika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Bozor Analitika: Demo Dashboard</h1>
+            <a href="./aksiyalar.html" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm transition">Orqaga</a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Chart 1 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Agrobank (AGBN) - Narxlar Dinamikasi</h2>
+                <canvas id="agroChart"></canvas>
+            </div>
+            <!-- Chart 2 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">SQB (SQBB) - Bozor Volyumi</h2>
+                <canvas id="sqbChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agrobank Data
+        const agroCtx = document.getElementById('agroChart').getContext('2d');
+        new Chart(agroCtx, {
+            type: 'line',
+            data: {
+                labels: ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun'],
+                datasets: [{
+                    label: 'Narx (so\'m)',
+                    data: [5000, 5150, 5100, 5250, 5218, 5300],
+                    borderColor: '#059669',
+                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            }
+        });
+
+        // SQB Data
+        const sqbCtx = document.getElementById('sqbChart').getContext('2d');
+        new Chart(sqbCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun'],
+                datasets: [{
+                    label: 'Savdo hajmi',
+                    data: [200000, 250000, 220000, 300000, 280000, 350000],
+                    backgroundColor: '#3b82f6'
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
