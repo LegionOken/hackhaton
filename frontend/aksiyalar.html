@@ -7,361 +7,141 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { user-select: none; -webkit-user-select: none; }
-        .gold-text {
-            color: #b7b72e;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar-btn {
-            transition: all 0.2s ease-in-out;
-        }
-        .sidebar-btn:hover {
-            background-color: #f3f4f6;
-            transform: scale(1.05);
-        }
-        .modal-overlay {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-        }
-        .status-active { background: #d1fae5; color: #065f46; }
-        .status-expired { background: #fce4ec; color: #b71c1c; }
-        .status-upcoming { background: #dbeafe; color: #1e40af; }
+        .gold-text { color: #b7b72e; text-shadow: 0px 2px 4px rgba(0,0,0,0.1); }
+        .sidebar-btn { transition: all 0.2s ease; }
+        .sidebar-btn:hover { background-color: #f3f4f6; transform: scale(1.05); }
         .card-hover { transition: all 0.25s ease; }
         .card-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 25px -8px rgba(0,0,0,0.12); }
         .fade-in { animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .positive { color: #16a34a; }
+        .negative { color: #dc2626; }
+        .modal-overlay { background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-expired { background: #fce4ec; color: #b71c1c; }
+        .status-upcoming { background: #dbeafe; color: #1e40af; }
         .slide-down { animation: slideDown 0.25s ease; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        .empty-state { opacity: 0.5; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans flex h-screen overflow-hidden">
-
     <aside class="w-28 bg-white border-r border-gray-200 flex flex-col items-center py-6 justify-between select-none z-10">
         <div class="flex flex-col items-center w-full space-y-8">
-            <a href="./index.html">
-                <div class="gold-text font-black text-2xl tracking-wider text-center px-2 leading-none cursor-pointer">
-                    Eco<br><span class="text-xl">Us</span>
-                </div>
-            </a>
+            <a href="./index.html"><div class="gold-text font-black text-2xl tracking-wider text-center px-2 leading-none cursor-pointer">Eco<br><span class="text-xl">Us</span></div></a>
             <nav class="flex flex-col items-center w-full space-y-6">
-                <a href="./profil.html">
-                    <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                        </svg>
-                        <span class="text-[11px] font-medium mt-1">Profil</span>
-                    </button>
-                </a>
-                <a href="./AiAssistent.html">
-                    <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-indigo-600">
-                        <div class="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center font-bold text-xs tracking-tighter">AI</div>
-                        <span class="text-[11px] font-medium mt-1">AI Assistent</span>
-                    </button>
-                </a>
-                <a href="./bozor.html">
-                    <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-emerald-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                        </svg>
-                        <span class="text-[11px] font-medium mt-1">Bozor</span>
-                    </button>
-                </a>
-                <a href="./aksiyalar.html">
-                    <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-amber-500 bg-amber-50 border border-amber-100 font-semibold shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                        </svg>
-                        <span class="text-[11px] font-medium mt-1">Aksiyalar</span>
-                    </button>
-                </a>
-
+                <a href="./profil.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-gray-800"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg><span class="text-[11px] font-medium mt-1">Profil</span></button></a>
+                <a href="./AiAssistent.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-indigo-600"><div class="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center font-bold text-xs tracking-tighter">AI</div><span class="text-[11px] font-medium mt-1">AI Assistent</span></button></a>
+                <a href="./bozor.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-emerald-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg><span class="text-[11px] font-medium mt-1">Bozor</span></button></a>
+                <a href="./aksiyalar.html"><button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-amber-500 bg-amber-50 border border-amber-100 font-semibold shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg><span class="text-[11px] font-medium mt-1">Aksiyalar</span></button></a>
             </nav>
         </div>
-        <button class="sidebar-btn p-3 rounded-full text-gray-400 hover:text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827a1.125 1.125 0 0 1 .26 1.43l-1.297 2.247a1.125 1.125 0 0 1-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-            </svg>
-        </button>
+        <button class="sidebar-btn p-3 rounded-full text-gray-400 hover:text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827a1.125 1.125 0 0 1 .26 1.43l-1.297 2.247a1.125 1.125 0 0 1-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /></svg></button>
     </aside>
 
     <main class="flex-1 flex flex-col bg-gray-50 overflow-hidden">
         <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
             <div class="flex items-center space-x-3">
                 <h1 class="text-lg font-bold text-gray-800">Aksiyalar</h1>
-                <span id="promoCount" class="text-xs bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full font-medium">0</span>
+                <span id="totalCount" class="text-xs bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full font-medium">0</span>
             </div>
             <div class="flex items-center space-x-3">
+                <span id="marketStatus" class="text-xs bg-gray-100 text-gray-500 px-2.5 py-0.5 rounded-full">Yuklanmoqda...</span>
                 <div class="relative">
                     <input type="text" id="searchInput" placeholder="Qidirish..." class="pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 w-52 bg-gray-50">
-                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
                 </div>
-                <button onclick="openAddModal()" class="bg-amber-500 hover:bg-amber-600 text-white font-medium text-sm px-4 py-2 rounded-lg transition shadow-sm flex items-center space-x-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    <span>Yangi aksiya</span>
-                </button>
             </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-6">
-            <!-- Список банков -->
-            <div class="mb-8">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Bank aksiyalari</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button onclick="window.location.href='./bozor.html?bank=agrobank'" class="p-4 bg-white border border-gray-200 rounded-xl hover:shadow-lg transition flex flex-col items-center">
-                        <span class="font-bold text-gray-700">Agrobank</span>
-                        <span class="text-xs text-green-500 font-medium mt-1">Chartni ko'rish</span>
-                    </button>
-                    <button onclick="window.location.href='./bozor.html?bank=sqb'" class="p-4 bg-white border border-gray-200 rounded-xl hover:shadow-lg transition flex flex-col items-center">
-                        <span class="font-bold text-gray-700">SQB</span>
-                        <span class="text-xs text-green-500 font-medium mt-1">Chartni ko'rish</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="cardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            </div>
-            <div id="emptyState" class="hidden flex-col items-center justify-center h-full text-center py-20">
-                <div class="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center text-amber-300 mb-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-10 h-10">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                    </svg>
-                </div>
-                <h2 class="text-xl font-semibold text-gray-400 mb-2">Hozircha aksiyalar mavjud emas</h2>
-                <p class="text-sm text-gray-400 max-w-sm">"Yangi aksiya" tugmasini bosib birinchi aksiyangizni qo'shing.</p>
-            </div>
+            <div id="sectorsContainer"></div>
         </div>
     </main>
 
-    <div id="modalOverlay" class="modal-overlay fixed inset-0 z-50 hidden items-center justify-center p-4" onclick="if(event.target===this)closeModal()">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto slide-down">
-            <div class="flex items-center justify-between p-5 border-b border-gray-100">
-                <h3 id="modalTitle" class="text-lg font-bold text-gray-800">Yangi aksiya qo'shish</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="p-5 space-y-4">
-                <input type="hidden" id="editId" value="">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Aksiya nomi</label>
-                    <input id="promoName" placeholder="Masalan: Bahorgi chegirma" class="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Chegirma foizi</label>
-                    <input id="promoDiscount" type="number" min="0" max="100" placeholder="Masalan: 20" class="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Tavsif</label>
-                    <textarea id="promoDesc" rows="3" placeholder="Aksiya haqida batafsil ma'lumot..." class="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm resize-none"></textarea>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Boshlanish sanasi</label>
-                        <input id="promoStart" type="date" class="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Tugash sanasi</label>
-                        <input id="promoEnd" type="date" class="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Holati</label>
-                    <select id="promoStatus" class="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm bg-white">
-                        <option value="active">Faol</option>
-                        <option value="upcoming">Kutilmoqda</option>
-                        <option value="expired">Tugagan</option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex justify-end space-x-3 p-5 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-                <button onclick="closeModal()" class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Bekor qilish</button>
-                <button onclick="savePromotion()" class="px-5 py-2.5 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition shadow-sm">Saqlash</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const STORAGE_KEY = 'eco_us_promotions';
+        let allStocks = [];
 
-        function getPromotions() {
+        async function loadData() {
             try {
-                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            } catch { return []; }
+                const resp = await fetch('./parser/data/bozor_data.json');
+                const data = await resp.json();
+                allStocks = data.stocks || [];
+                document.getElementById('totalCount').textContent = allStocks.length;
+                document.getElementById('marketStatus').textContent = "Yangilangan: " + (data.lastUpdated || '--');
+                document.getElementById('marketStatus').className = 'text-xs bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full';
+            } catch {
+                document.getElementById('marketStatus').textContent = "Ma'lumot yuklanmadi";
+                document.getElementById('marketStatus').className = 'text-xs bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full';
+            }
+            renderSectors();
         }
 
-        function savePromotions(data) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        }
-
-        function formatDate(dateStr) {
-            if (!dateStr) return '-';
-            const d = new Date(dateStr + 'T00:00:00');
-            return d.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
-
-        function getStatusInfo(status) {
-            const map = {
-                active: { label: 'Faol', class: 'status-active' },
-                expired: { label: 'Tugagan', class: 'status-expired' },
-                upcoming: { label: 'Kutilmoqda', class: 'status-upcoming' }
-            };
-            return map[status] || map.active;
-        }
-
-        function renderCards() {
-            const container = document.getElementById('cardsContainer');
-            const empty = document.getElementById('emptyState');
-            const count = document.getElementById('promoCount');
+        function renderSectors() {
+            const container = document.getElementById('sectorsContainer');
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
 
-            let promotions = getPromotions();
-
+            let filtered = allStocks;
             if (search) {
-                promotions = promotions.filter(p =>
-                    p.name.toLowerCase().includes(search) ||
-                    p.description.toLowerCase().includes(search) ||
-                    p.status.toLowerCase().includes(search)
+                filtered = allStocks.filter(s =>
+                    s.name.toLowerCase().includes(search) ||
+                    s.ticker.toLowerCase().includes(search) ||
+                    s.sector.toLowerCase().includes(search)
                 );
             }
 
-            count.textContent = promotions.length;
+            const groups = {};
+            const sectorOrder = [];
+            filtered.forEach(s => {
+                const sec = s.sector || "Boshqa";
+                if (!groups[sec]) {
+                    groups[sec] = { name: sec, stocks: [] };
+                    sectorOrder.push(sec);
+                }
+                groups[sec].stocks.push(s);
+            });
 
-            if (promotions.length === 0) {
-                container.innerHTML = '';
-                container.classList.add('hidden');
-                empty.classList.remove('hidden');
-                return;
-            }
+            const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500', 'bg-cyan-500', 'bg-orange-500', 'bg-teal-500', 'bg-indigo-500', 'bg-pink-500'];
 
-            container.classList.remove('hidden');
-            empty.classList.add('hidden');
-
-            container.innerHTML = promotions.map(p => {
-                const statusInfo = getStatusInfo(p.status);
+            container.innerHTML = sectorOrder.map((sec, gi) => {
+                const g = groups[sec];
+                const upCount = g.stocks.filter(s => s.changePercent > 0).length;
+                const downCount = g.stocks.filter(s => s.changePercent < 0).length;
                 return `
-                    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover fade-in p-5 flex flex-col">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="bg-amber-50 rounded-lg w-11 h-11 flex items-center justify-center text-amber-500 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                                </svg>
-                            </div>
-                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${statusInfo.class}">${statusInfo.label}</span>
-                        </div>
-                        <h3 class="font-bold text-gray-800 text-base mb-1">${p.name}</h3>
-                        ${p.discount ? `<div class="text-2xl font-black text-amber-500 mb-2">-${p.discount}%</div>` : ''}
-                        <p class="text-sm text-gray-500 mb-3 flex-1 line-clamp-2">${p.description || 'Tavsif mavjud emas'}</p>
-                        <div class="text-xs text-gray-400 space-y-1 pt-3 border-t border-gray-50 mt-auto">
-                            <div class="flex items-center">
-                                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                ${formatDate(p.startDate)} - ${formatDate(p.endDate)}
-                            </div>
-                        </div>
-                        <div class="flex space-x-2 mt-3 pt-3 border-t border-gray-50">
-                            <button onclick="editPromotion('${p.id}')" class="flex-1 text-xs font-medium text-gray-500 bg-gray-50 hover:bg-gray-100 py-2 rounded-lg transition">Tahrirlash</button>
-                            <button onclick="deletePromotion('${p.id}')" class="flex-1 text-xs font-medium text-red-500 bg-red-50 hover:bg-red-100 py-2 rounded-lg transition">O'chirish</button>
-                        </div>
+                <div class="mb-6 fade-in">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-bold text-gray-800 text-base">${sec}</h2>
+                        <span class="text-xs text-gray-400">${g.stocks.length} ta · 
+                            <span class="text-green-600 font-medium">+${upCount}</span> / 
+                            <span class="text-red-600 font-medium">-${downCount}</span>
+                        </span>
                     </div>
-                `;
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3">
+                        ${g.stocks.map((s, i) => {
+                            const isUp = s.changePercent >= 0;
+                            const colorIdx = (sectorOrder.indexOf(sec) + i) % colors.length;
+                            return `
+                            <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover p-3 flex flex-col">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <div class="w-8 h-8 rounded-lg ${colors[colorIdx]} flex items-center justify-center text-white text-xs font-bold flex-shrink-0">${s.ticker.slice(0, 3)}</div>
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-gray-800 text-sm truncate">${s.name}</p>
+                                        <p class="text-xs text-gray-400">${s.ticker}</p>
+                                    </div>
+                                </div>
+                                <p class="text-base font-bold text-gray-800">${s.price.toLocaleString()}</p>
+                                <p class="text-xs font-semibold ${isUp ? 'text-green-600' : 'text-red-600'}">
+                                    ${isUp ? '+' : ''}${s.changePercent.toFixed(2)}%
+                                </p>
+                                <a href="./sharx.html?company=${s.key}" class="mt-2 text-xs font-medium text-center text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-2 py-1.5 rounded-lg transition">Chart</a>
+                            </div>`;
+                        }).join('')}
+                    </div>
+                </div>`;
             }).join('');
         }
 
-        function openAddModal() {
-            document.getElementById('modalTitle').textContent = 'Yangi aksiya qo\'shish';
-            document.getElementById('editId').value = '';
-            document.getElementById('promoName').value = '';
-            document.getElementById('promoDiscount').value = '';
-            document.getElementById('promoDesc').value = '';
-            document.getElementById('promoStart').value = '';
-            document.getElementById('promoEnd').value = '';
-            document.getElementById('promoStatus').value = 'active';
-            document.getElementById('modalOverlay').classList.remove('hidden');
-            document.getElementById('modalOverlay').classList.add('flex');
-        }
-
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.add('hidden');
-            document.getElementById('modalOverlay').classList.remove('flex');
-        }
-
-        function savePromotion() {
-            const editId = document.getElementById('editId').value;
-            const name = document.getElementById('promoName').value.trim();
-            const discount = document.getElementById('promoDiscount').value;
-            const description = document.getElementById('promoDesc').value.trim();
-            const startDate = document.getElementById('promoStart').value;
-            const endDate = document.getElementById('promoEnd').value;
-            const status = document.getElementById('promoStatus').value;
-
-            if (!name) {
-                alert('Iltimos, aksiya nomini kiriting!');
-                return;
-            }
-
-            let promotions = getPromotions();
-
-            if (editId) {
-                const idx = promotions.findIndex(p => p.id === editId);
-                if (idx !== -1) {
-                    promotions[idx] = { ...promotions[idx], name, discount, description, startDate, endDate, status };
-                }
-            } else {
-                const newPromo = {
-                    id: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-                    name,
-                    discount,
-                    description,
-                    startDate,
-                    endDate,
-                    status,
-                    createdAt: new Date().toISOString()
-                };
-                promotions.unshift(newPromo);
-            }
-
-            savePromotions(promotions);
-            closeModal();
-            renderCards();
-        }
-
-        function editPromotion(id) {
-            const promotions = getPromotions();
-            const p = promotions.find(item => item.id === id);
-            if (!p) return;
-
-            document.getElementById('modalTitle').textContent = 'Aksiyani tahrirlash';
-            document.getElementById('editId').value = p.id;
-            document.getElementById('promoName').value = p.name;
-            document.getElementById('promoDiscount').value = p.discount || '';
-            document.getElementById('promoDesc').value = p.description || '';
-            document.getElementById('promoStart').value = p.startDate || '';
-            document.getElementById('promoEnd').value = p.endDate || '';
-            document.getElementById('promoStatus').value = p.status || 'active';
-            document.getElementById('modalOverlay').classList.remove('hidden');
-            document.getElementById('modalOverlay').classList.add('flex');
-        }
-
-        function deletePromotion(id) {
-            if (!confirm('Bu aksiyani o\'chirishni xohlaysizmi?')) return;
-            let promotions = getPromotions();
-            promotions = promotions.filter(p => p.id !== id);
-            savePromotions(promotions);
-            renderCards();
-        }
-
-        document.getElementById('searchInput').addEventListener('input', renderCards);
-
-        document.addEventListener('DOMContentLoaded', renderCards);
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
+        document.getElementById('searchInput').addEventListener('input', renderSectors);
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>

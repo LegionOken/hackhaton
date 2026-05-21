@@ -63,8 +63,8 @@
                     <p id="faqCount" class="text-2xl font-bold text-gray-800">0</p>
                 </div>
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 card-hover">
-                    <p class="text-xs text-gray-400 font-medium">Faol aksiyalar</p>
-                    <p id="activePromoCount" class="text-2xl font-bold text-amber-500">0</p>
+                    <p class="text-xs text-gray-400 font-medium">Aksiyalar (ko't/lik)</p>
+                    <p id="activePromoCount" class="text-2xl font-bold text-gray-800">0</p>
                 </div>
             </div>
 
@@ -138,8 +138,10 @@
             document.getElementById('planCount').textContent = bozorData.plans?.length || 0;
             document.getElementById('faqCount').textContent = bozorData.faq?.length || 0;
 
-            const promos = getLocalPromotions();
-            document.getElementById('activePromoCount').textContent = promos.filter(p => p.status === 'active').length;
+            const stocks = bozorData.stocks || [];
+            const upCount = stocks.filter(s => s.changePercent > 0).length;
+            const downCount = stocks.filter(s => s.changePercent < 0).length;
+            document.getElementById('activePromoCount').innerHTML = `${upCount} <span class="text-xs font-normal text-green-500">+</span> / ${downCount} <span class="text-xs font-normal text-red-500">-</span>`;
 
             renderCompanies();
             renderPlans();
@@ -151,6 +153,15 @@
             try { return JSON.parse(localStorage.getItem('eco_us_promotions')) || []; } catch { return []; }
         }
 
+        function companyToKey(name) {
+            const map = { 'Agrobank': 'agrobank', 'Kafolat': 'kafolat', 'SQB': 'sqb', "Ipak Yo'li": 'ipak', 'UNG': 'ung', 'UzEx': 'uzex', 'Qizilqum sement': 'qizilqum', 'Aloqa': 'aloqa' };
+            return map[name] || name.toLowerCase().replace(/\s+/g, '');
+        }
+
+        function getStockByKey(key) {
+            return (bozorData.stocks || []).find(s => s.key === key) || null;
+        }
+
         function renderCompanies() {
             const grid = document.getElementById('companiesGrid');
             const companies = bozorData.companies || [];
@@ -159,13 +170,21 @@
                 return;
             }
             const colors = ['bg-blue-50 text-blue-500', 'bg-emerald-50 text-emerald-500', 'bg-amber-50 text-amber-500', 'bg-purple-50 text-purple-500', 'bg-rose-50 text-rose-500', 'bg-cyan-50 text-cyan-500', 'bg-orange-50 text-orange-500', 'bg-teal-50 text-teal-500'];
-            grid.innerHTML = companies.map((c, i) => `
+            grid.innerHTML = companies.map((c, i) => {
+                const stock = getStockByKey(companyToKey(c.name));
+                const priceStr = stock ? stock.price.toLocaleString() + " so'm" : '';
+                const pctStr = stock ? (stock.changePercent >= 0 ? '+' : '') + stock.changePercent.toFixed(2) + '%' : '';
+                const isUp = stock ? stock.changePercent >= 0 : true;
+                return `
                 <div class="bg-gray-50 rounded-xl p-4 text-center card-hover fade-in border border-gray-50">
                     <div class="w-14 h-14 mx-auto rounded-xl ${colors[i % colors.length]} flex items-center justify-center text-lg font-bold mb-3">${c.name.charAt(0)}</div>
                     <h3 class="font-bold text-gray-800 text-sm">${c.name}</h3>
                     <p class="text-xs text-gray-400 mt-0.5">${c.sector || 'Noma\'lum'}</p>
+                    ${priceStr ? `<p class="text-sm font-bold text-gray-700 mt-2">${priceStr}</p>` : ''}
+                    ${pctStr ? `<p class="text-xs font-semibold ${isUp ? 'text-green-600' : 'text-red-600'}">${pctStr}</p>` : ''}
+                    <a href="./sharx.html?company=${companyToKey(c.name)}" class="inline-block text-xs font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition mt-2">Chart</a>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function renderPlans() {

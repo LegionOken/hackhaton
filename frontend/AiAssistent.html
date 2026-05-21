@@ -79,9 +79,6 @@
         const chatMessages = document.getElementById('chatMessages');
         const dataStatus = document.getElementById('dataStatus');
 
-        const apiKey = 'AIzaSyBnfWKCS8gdVBgFxwn22tbTX7PxgnsywuM';
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
         let siteContext = '';
 
         async function loadSiteData() {
@@ -205,28 +202,26 @@
             const loadId = appendMessage('ai', 'Tahlil qilmoqda...', true);
 
             try {
-                const fullPrompt = `${siteContext}\n\nFoydalanuvchi savoli: ${text}\n\nJavob:`;
-
-                const response = await fetch(apiUrl, {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: fullPrompt }] }]
+                        message: text,
+                        context: siteContext
                     })
                 });
 
                 const data = await response.json();
                 document.getElementById(loadId)?.remove();
 
-                if(data.candidates && data.candidates[0].content.parts[0].text) {
-                    const aiText = data.candidates[0].content.parts[0].text;
-                    appendMessage('ai', aiText);
+                if (data.reply) {
+                    appendMessage('ai', data.reply);
                 } else {
-                    appendMessage('ai', 'Tizimda xatolik yuz berdi. Qayta urinib ko\'ring.');
+                    appendMessage('ai', data.error || 'Tizimda xatolik yuz berdi. Qayta urinib ko\'ring.');
                 }
             } catch (err) {
                 document.getElementById(loadId)?.remove();
-                appendMessage('ai', 'Internet ulanishi yoki API kalitda xatolik mavjud.');
+                appendMessage('ai', 'Serverga ulanishda xatolik. Server ishlayotganiga ishonch hosil qiling.');
                 console.error(err);
             }
         }

@@ -28,3 +28,16 @@
 1. **Phase 1 (Setup):** Интеграция AI-сервисов (FastAPI) с существующим `frontend/` и `parser/`.
 2. **Phase 2 (Data):** Настройка ETL-пайплайна (сбор -> нормализация -> Vector DB).
 3. **Phase 3 (Intelligence):** Разработка прогнозных моделей и рекомендательного движка.
+
+
+## Idea
+Siz taklif qilgan loyiha g‘oyasining qisqacha mazmuni (Summary):
+Loyiha nomi: Bozor-Analitika (B2B AI Platform)
+Muammo:
+O‘zbekiston bozorlarida real vaqtdagi narx-navo, talab va taklifni kuzatish imkonini beruvchi yagona va markazlashgan tahliliy ma’lumotlar bazasining mavjud emasligi. Bu holat ulgurji va chakana savdogarlar uchun eng maqbul narxlarni topishni qiyinlashtiradi.
+Yechim va G‘oya:
+Real vaqt rejimida an’anaviy bozorlardagi narxlarni tahlil qiluvchi va eng arzon, qulay takliflarni topishga yordam beruvchi aqlli savdo-axborot tizimi.
+Kengaytirilgan funksiyalar (Sizning qo‘shimchangiz):
+Fond bozori integratsiyasi: Platformaga aksiyalar va xomashyo birjasi narxlari ham kiritiladi. Foydalanuvchilarga nafaqat real bozorda, balki fond bozorida ham aksiyalarni sotib olish yoki sotish imkoniyati yaratiladi.
+Sun’iy intellekt (AI Assistant): Tizimga o‘rnatilgan AI yordamchisi ulgurji bozor narxlari bilan aksiyadorlik kompaniyalari ko‘rsatkichlari o‘rtasidagi bog‘liqlikni tahlil qiladi va foydalanuvchilarga bashoratlar hamda savdo bo‘yicha aqlli tavsiyalar beradi.
+Eslatma (Moliyaviy ogohlantirish): Fond bozori va aksiyalar savdosi yuqori moliyaviy xavf (risk) bilan bog‘liq. Platformani ishlab chiqishda foydalanuvchilarni ushbu xavflardan ogohlantiruvchi tizim va qonuniy litsenziyalash talablariga rioya qilish muhim hisoblanadi.
