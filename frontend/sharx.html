@@ -1,337 +1,59 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sharx - Eco Us</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { user-select: none; -webkit-user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-.gold-text { color: #b7b72e; text-shadow: 0px 2px 4px rgba(0,0,0,0.1); }
-.sidebar-btn { transition: all 0.2s ease-in-out; }
-.sidebar-btn:hover { background-color: #f3f4f6; transform: scale(1.05); }
-.stat-card { transition: all 0.2s ease; }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -6px rgba(0,0,0,0.1); }
-#chart { width: 100%; height: 380px; cursor: crosshair; }
-.fade-in { animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.flash-up { animation: flashGreen 0.5s ease; }
-.flash-down { animation: flashRed 0.5s ease; }
-@keyframes flashGreen { 0% { background: rgba(22,163,74,0.15); } 100% { background: transparent; } }
-@keyframes flashDown { 0% { background: rgba(220,38,38,0.15); } 100% { background: transparent; } }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart - Bozor Analitika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-50 font-sans flex h-screen overflow-hidden">
-
-<!-- Sidebar -->
-<aside class="w-28 bg-white border-r border-gray-200 flex flex-col items-center py-6 justify-between select-none flex-shrink-0">
-  <div class="flex flex-col items-center w-full space-y-8">
-    <a href="./index.html"><div class="gold-text font-black text-2xl tracking-wider text-center px-2 leading-none cursor-pointer">Eco<br><span class="text-xl">Us</span></div></a>
-    <nav class="flex flex-col items-center w-full space-y-6">
-      <a href="./profil.html">
-        <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-gray-800">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
-          <span class="text-[11px] font-medium mt-1">Profil</span>
-        </button>
-      </a>
-      <a href="./AiAssistent.html">
-        <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-indigo-600">
-          <div class="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center font-bold text-xs tracking-tighter">AI</div>
-          <span class="text-[11px] font-medium mt-1">AI Assistent</span>
-        </button>
-      </a>
-      <a href="./bozor.html">
-        <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-emerald-600">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
-          <span class="text-[11px] font-medium mt-1">Bozor</span>
-        </button>
-      </a>
-      <a href="./aksiyalar.html">
-        <button class="sidebar-btn w-20 py-2 flex flex-col items-center justify-center rounded-xl text-gray-500 hover:text-amber-500">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>
-          <span class="text-[11px] font-medium mt-1">Aksiyalar</span>
-        </button>
-      </a>
-    </nav>
-  </div>
-  <button class="sidebar-btn p-3 rounded-full text-gray-400 hover:text-gray-600">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827a1.125 1.125 0 0 1 .26 1.43l-1.297 2.247a1.125 1.125 0 0 1-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
-  </button>
-</aside>
-
-<!-- Main -->
-<main class="flex-1 flex flex-col overflow-hidden">
-  <!-- Header -->
-  <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
-    <div class="flex items-center space-x-4">
-      <h1 class="text-lg font-bold text-gray-800">
-        <span id="companyName">--</span>
-        <span id="companyTicker" class="text-sm font-normal text-gray-400 ml-2"></span>
-      </h1>
-      <span id="priceNav" class="text-sm font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-500">--</span>
-    </div>
-    <div class="flex items-center space-x-2">
-      <select id="companySelect" onchange="switchCompany(this.value)" class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-300"></select>
-      <a href="./aksiyalar.html">
-        <button class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium text-sm px-4 py-2 rounded-lg transition flex items-center space-x-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" /></svg>
-          <span>Ortga</span>
-        </button>
-      </a>
-    </div>
-  </header>
-
-  <div class="flex-1 overflow-y-auto p-6">
-    <!-- Stats grid -->
-    <div id="statsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 fade-in">
-      <div class="stat-card bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-        <p class="text-xs text-gray-400 font-medium">Oxirgi narx</p>
-        <p id="lastPrice" class="text-xl font-bold text-gray-800">--</p>
-      </div>
-      <div class="stat-card bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-        <p class="text-xs text-gray-400 font-medium">Kunlik o'zgarish</p>
-        <p id="changeAmount" class="text-xl font-bold text-gray-800">--</p>
-      </div>
-      <div class="stat-card bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-        <p class="text-xs text-gray-400 font-medium">Maksimal (1y)</p>
-        <p id="highPrice" class="text-xl font-bold text-gray-800">--</p>
-      </div>
-      <div class="stat-card bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-        <p class="text-xs text-gray-400 font-medium">Hajm (o'rtacha)</p>
-        <p id="volumeInfo" class="text-xl font-bold text-gray-800">--</p>
-      </div>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <h2 id="chartTitle" class="text-xl font-bold text-gray-800 mb-4">Yuklanmoqda...</h2>
+        <canvas id="stockChart" height="300"></canvas>
+        <a href="./aksiyalar.html" class="mt-6 inline-block text-emerald-600 hover:text-emerald-700 font-medium text-sm">← Orqaga</a>
     </div>
 
-    <!-- Fake chart -->
-    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-5 fade-in">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="font-bold text-gray-800 text-sm">Narx grafigi</h2>
-        <div class="flex items-center space-x-2">
-          <span id="chartTooltip" class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded"></span>
-          <select id="rangeSelect" onchange="drawChart()" class="text-xs border border-gray-200 rounded-lg px-2 py-1 bg-white focus:outline-none">
-            <option value="1M">1 oy</option>
-            <option value="3M" selected>3 oy</option>
-            <option value="6M">6 oy</option>
-            <option value="1Y">1 yil</option>
-          </select>
-        </div>
-      </div>
-      <canvas id="chart"></canvas>
-    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const bankKey = params.get('bank');
 
-    <!-- Extra info -->
-    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 fade-in">
-      <h2 class="font-bold text-gray-800 text-sm mb-2">Qo'shimcha ma'lumotlar</h2>
-      <div id="extraInfo" class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm"></div>
-    </div>
-  </div>
-</main>
+        async function initChart() {
+            try {
+                const resp = await fetch('./parser/data/bozor_data.json');
+                const data = await resp.json();
+                const stock = data.stocks.find(s => s.key === bankKey);
+                
+                if (!stock) {
+                    document.getElementById('chartTitle').textContent = "Ma'lumot topilmadi";
+                    return;
+                }
 
-<script>
-let allData = { stocks: [] };
-let currentStock = null;
-let chartData = [];
+                document.getElementById('chartTitle').textContent = `Narxlar tarixi: ${stock.name}`;
+                
+                const labels = stock.history.map(h => h.time);
+                const prices = stock.history.map(h => h.close);
 
-function seededHash(seed, min, max) {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) { h = ((h << 5) - h) + seed.charCodeAt(i); h |= 0; }
-  return min + (Math.abs(h) / 0x7FFFFFFF) * (max - min);
-}
-
-function formatPrice(v) { return Number(v).toLocaleString() + " so'm"; }
-
-async function loadData() {
-  try {
-    const resp = await fetch("./parser/data/bozor_data.json");
-    allData = await resp.json();
-  } catch (e) {
-    allData = { stocks: [] };
-  }
-  const sel = document.getElementById("companySelect");
-  sel.innerHTML = allData.stocks.map(s =>
-    `<option value="${s.key}">${s.name} (${s.ticker})</option>`
-  ).join("");
-  const key = new URLSearchParams(window.location.search).get("company") || (allData.stocks[0] || {}).key || "";
-  if (key) switchCompany(key);
-}
-
-function switchCompany(key) {
-  currentStock = allData.stocks.find(s => s.key === key);
-  if (!currentStock) return;
-  history.replaceState(null, "", "?company=" + key);
-  renderStock();
-}
-
-function renderStock() {
-  const s = currentStock;
-  if (!s) return;
-  const isUp = s.change >= 0;
-  document.getElementById("companyName").textContent = s.name;
-  document.getElementById("companyTicker").textContent = s.ticker;
-
-  const priceEl = document.getElementById("lastPrice");
-  priceEl.textContent = formatPrice(s.price);
-  priceEl.classList.remove("flash-up", "flash-down");
-  void priceEl.offsetWidth;
-  priceEl.classList.add(isUp ? "flash-up" : "flash-down");
-
-  document.getElementById("changeAmount").innerHTML = (isUp ? "+" : "") + s.change.toFixed(2) + " <span class='text-xs font-normal'>(" + (isUp ? "+" : "") + s.changePercent.toFixed(2) + "%)</span>";
-  document.getElementById("changeAmount").className = "text-xl font-bold " + (isUp ? "text-green-600" : "text-red-600");
-
-  document.getElementById("highPrice").textContent = formatPrice(s.high);
-  document.getElementById("volumeInfo").textContent = (s.avgVolume || 0).toLocaleString();
-
-  const badge = document.getElementById("priceNav");
-  badge.textContent = (isUp ? "+" : "") + s.changePercent.toFixed(2) + "%";
-  badge.className = "text-sm font-semibold px-2.5 py-0.5 rounded-full " + (isUp ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700");
-
-  document.getElementById("companySelect").value = s.key;
-
-  const extra = document.getElementById("extraInfo");
-  extra.innerHTML =
-    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-gray-400 text-xs">Ochilish</p><p class="font-semibold text-gray-800">' + formatPrice(s.open) + '</p></div>' +
-    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-gray-400 text-xs">Yopilish (old)</p><p class="font-semibold text-gray-800">' + formatPrice(s.prevClose) + '</p></div>' +
-    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-gray-400 text-xs">Yillik o\'zgarish</p><p class="font-semibold ' + (s.changeYear >= 0 ? 'text-green-600' : 'text-red-600') + '">' + (s.changeYear >= 0 ? "+" : "") + s.changeYearPercent.toFixed(2) + '%</p></div>' +
-    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-gray-400 text-xs">Hajm (bugun)</p><p class="font-semibold text-gray-800">' + (s.volume || 0).toLocaleString() + '</p></div>';
-
-  // Generate fake chart data from the stock's base price
-  generateFakeData(s);
-  drawChart();
-}
-
-function generateFakeData(s) {
-  const base = s.open || s.price;
-  chartData = [];
-  const count = 63;
-  const driftBase = seededHash(s.key + "_drift", -0.0003, 0.0008);
-  let price = base - base * seededHash(s.key + "_start", 0.03, 0.08);
-  for (let i = 0; i < count; i++) {
-    const r = seededHash(s.key + "_d" + i, -1, 1);
-    const drift = price * driftBase + price * 0.003 * r;
-    const open = price;
-    const close = Math.max(price + drift, base * 0.1);
-    const high = Math.max(open, close) * (1 + Math.abs(r) * 0.002);
-    const low = Math.min(open, close) * (1 - Math.abs(r) * 0.002);
-    price = close;
-    const vol = Math.round(50000 + seededHash(s.key + "_v" + i, 0, 1) * 300000);
-    chartData.push({ time: i, open, high, low, close, volume: vol });
-  }
-}
-
-function drawChart() {
-  const canvas = document.getElementById("chart");
-  const rect = canvas.parentElement.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = (rect.width - 32) * dpr;
-  canvas.height = 380 * dpr;
-  canvas.style.width = (rect.width - 32) + "px";
-  canvas.style.height = "380px";
-
-  const ctx = canvas.getContext("2d");
-  const W = canvas.width, H = canvas.height;
-
-  const range = document.getElementById("rangeSelect").value;
-  const slice = { "1M": 22, "3M": 63, "6M": 130, "1Y": 260 }[range] || 63;
-  const data = chartData.slice(-slice);
-  if (data.length < 2) return;
-
-  // Find min/max
-  let minP = Infinity, maxP = -Infinity, maxV = 0;
-  data.forEach(d => { if (d.low < minP) minP = d.low; if (d.high > maxP) maxP = d.high; if (d.volume > maxV) maxV = d.volume; });
-  const pad = (maxP - minP) * 0.1;
-  minP -= pad; maxP += pad;
-
-  const padLeft = 60 * dpr, padRight = 10 * dpr, padTop = 10 * dpr, padBottom = 50 * dpr;
-  const chartW = W - padLeft - padRight;
-  const chartH = H - padTop - padBottom;
-  const scaleX = chartW / (data.length - 1);
-  const scaleY = chartH / (maxP - minP);
-
-  function x(i) { return padLeft + i * scaleX; }
-  function y(v) { return padTop + chartH - (v - minP) * scaleY; }
-
-  // Clear
-  ctx.clearRect(0, 0, W, H);
-
-  // Grid
-  ctx.strokeStyle = "#f3f4f6";
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4 * dpr, 4 * dpr]);
-  const gridLines = 5;
-  for (let i = 0; i <= gridLines; i++) {
-    const yy = padTop + (chartH / gridLines) * i;
-    ctx.beginPath(); ctx.moveTo(padLeft, yy); ctx.lineTo(W - padRight, yy); ctx.stroke();
-    const val = maxP - (maxP - minP) * (i / gridLines);
-    ctx.setLineDash([]);
-    ctx.fillStyle = "#9ca3af";
-    ctx.font = (11 * dpr) + "px sans-serif";
-    ctx.textAlign = "right";
-    ctx.fillText(val.toLocaleString(undefined, {maximumFractionDigits:0}), padLeft - 6 * dpr, yy + 4 * dpr);
-    ctx.setLineDash([4 * dpr, 4 * dpr]);
-  }
-  ctx.setLineDash([]);
-
-  // X-axis labels
-  ctx.fillStyle = "#9ca3af";
-  ctx.font = (10 * dpr) + "px sans-serif";
-  ctx.textAlign = "center";
-  const labelCount = Math.min(6, data.length);
-  const step = Math.max(1, Math.floor(data.length / (labelCount - 1)));
-  for (let i = 0; i < data.length; i += step) {
-    const label = (i + 1) + "k";
-    ctx.fillText(label, x(i), H - padBottom * 0.25);
-  }
-
-  // Draw candlesticks
-  const candleWidth = Math.max(2 * dpr, Math.min(6 * dpr, scaleX * 0.6));
-  data.forEach((d, i) => {
-    const cx = x(i);
-    const isUp = d.close >= d.open;
-    ctx.fillStyle = isUp ? "#16a34a" : "#dc2626";
-    ctx.strokeStyle = isUp ? "#16a34a" : "#dc2626";
-    ctx.lineWidth = 1 * dpr;
-
-    // Wick
-    ctx.beginPath();
-    ctx.moveTo(cx, y(d.high));
-    ctx.lineTo(cx, y(d.low));
-    ctx.stroke();
-
-    // Body
-    const top = Math.min(d.open, d.close);
-    const bot = Math.max(d.open, d.close);
-    const bodyH = Math.max(1 * dpr, (y(top) - y(bot)));
-    ctx.fillRect(cx - candleWidth / 2, y(top), candleWidth, bodyH);
-  });
-
-  // Volume bars
-  data.forEach((d, i) => {
-    const cx = x(i);
-    const isUp = d.close >= d.open;
-    ctx.fillStyle = isUp ? "rgba(22,163,74,0.15)" : "rgba(220,38,38,0.15)";
-    const vh = (d.volume / maxV) * (padBottom * 0.55);
-    ctx.fillRect(cx - candleWidth / 2, H - padBottom + 5 * dpr, candleWidth, -vh);
-  });
-
-  // Draw tooltip on hover
-  canvas.onmousemove = function(e) {
-    const rect2 = canvas.getBoundingClientRect();
-    const mx = (e.clientX - rect2.left) / rect2.width * canvas.width;
-    const idx = Math.round((mx - padLeft) / scaleX);
-    if (idx < 0 || idx >= data.length) {
-      document.getElementById("chartTooltip").textContent = "";
-      return;
-    }
-    const d = data[idx];
-    document.getElementById("chartTooltip").textContent =
-      "O:" + d.open.toFixed(0) + " H:" + d.high.toFixed(0) + " L:" + d.low.toFixed(0) + " C:" + d.close.toFixed(0) + " | V:" + d.volume.toLocaleString();
-  };
-  canvas.onmouseleave = function() { document.getElementById("chartTooltip").textContent = ""; };
-}
-
-document.addEventListener("DOMContentLoaded", loadData);
-window.addEventListener("resize", function() { if (chartData.length) drawChart(); });
-</script>
+                new Chart(document.getElementById('stockChart'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Narx (so\'m)',
+                            data: prices,
+                            borderColor: '#059669',
+                            tension: 0.1,
+                            fill: true,
+                            backgroundColor: 'rgba(5, 150, 105, 0.1)'
+                        }]
+                    },
+                    options: { responsive: true }
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        initChart();
+    </script>
 </body>
 </html>
