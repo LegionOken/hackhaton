@@ -1,0 +1,105 @@
+{
+  "site": {
+    "name": "Jett",
+    "description": "O'zbekiston kompaniyalari aksiyalariga investitsiya xizmati",
+    "url": "https://jett.uz",
+    "appUrl": "https://app.jett.uz",
+    "company": "MULTIBROKER MChJ",
+    "registered": "15.07.2022",
+    "regNumber": "1162058",
+    "stir": "309719290",
+    "brokers": [
+      { "name": "Silk Capital MChJ", "license": "1372", "registered": "12.04.2017", "stir": "304824506" },
+      { "name": "ALKES RESEARCH MChJ", "license": "1434", "registered": "28.01.2021", "stir": "308126707" }
+    ],
+    "paymentService": "MULTICARD PAYMENT MChJ"
+  },
+  "companies": [
+    { "name": "Agrobank", "logo": "agrobank.svg", "sector": "Bank" },
+    { "name": "Kafolat", "logo": "kafolat.svg", "sector": "Sug'urta" },
+    { "name": "SQB", "logo": "sqb.svg", "sector": "Bank" },
+    { "name": "Ipak Yo'li", "logo": "ipak1.svg", "sector": "Bank" },
+    { "name": "UNG", "logo": "ung.svg", "sector": "Neft va gaz" },
+    { "name": "UzEx", "logo": "uzex1.svg", "sector": "Birja" },
+    { "name": "Qizilqum sement", "logo": "qizilqumsement.svg", "sector": "Qurilish" },
+    { "name": "Aloqa", "logo": "aloqa1.svg", "sector": "Telekommunikatsiya" }
+  ],
+  "plans": [
+    {
+      "name": "Investor",
+      "commissions": {
+        "stock_listed_buy_sell": "0.31%",
+        "stock_unlisted_buy_sell": "0.41%",
+        "bond_listed_buy_sell": "0.05%",
+        "bond_unlisted_buy_sell": "0.081%",
+        "depository_stock_listed": "0.05%",
+        "depository_stock_unlisted": "0.07%",
+        "depository_bond_listed": "0.0055%",
+        "depository_bond_unlisted": "0.05%",
+        "stamp_duty": "0.01%",
+        "broker_stock_listed": "0.63%",
+        "broker_stock_unlisted": "0.51%",
+        "broker_bond_listed": "0.3545%",
+        "broker_bond_unlisted": "0.279%"
+      }
+    },
+    {
+      "name": "Treyder",
+      "commissions": {
+        "stock_listed_buy_sell": "0.31%",
+        "stock_unlisted_buy_sell": "0.41%",
+        "bond_listed_buy_sell": "0.05%",
+        "bond_unlisted_buy_sell": "0.081%",
+        "depository_stock_listed": "0.05%",
+        "depository_stock_unlisted": "0.07%",
+        "depository_bond_listed": "0.0055%",
+        "depository_bond_unlisted": "0.05%",
+        "stamp_duty": "0.01%",
+        "broker_stock_listed": "1%",
+        "broker_stock_unlisted": "1%",
+        "broker_bond_listed": "0.4%",
+        "broker_bond_unlisted": "0.3578%"
+      }
+    },
+    {
+      "name": "Pro",
+      "commissions": {
+        "stock_listed_buy_sell": "0.31%",
+        "stock_unlisted_buy_sell": "0.41%",
+        "bond_listed_buy_sell": "0.05%",
+        "bond_unlisted_buy_sell": "0.081%",
+        "depository_stock_listed": "0.05%",
+        "depository_stock_unlisted": "0.07%",
+        "depository_bond_listed": "0.0055%",
+        "depository_bond_unlisted": "0.05%",
+        "stamp_duty": "0.01%",
+        "broker_stock_listed": "1%",
+        "broker_stock_unlisted": "1%",
+        "broker_bond_listed": "0.4%",
+        "broker_bond_unlisted": "0.3578%"
+      }
+    }
+  ],
+  "faq": [
+    {
+      "category": "Fond bozori",
+      "questions": [
+        { "q": "Fond bozori nima uchun kerak?", "a": "Fond bozori yoki qimmatli qog'ozlar bozori - moliyaviy bozorning ajralmas qismi bo'lib, u iqtisodiyotda muhim rol o'ynaydi. Kompaniyalar va davlat o'z faoliyati uchun investitsiyalar jalb etishi mumkin, investorlar esa daromad topish maqsadida o'z mablag'larini kiritish imkoniyatiga ega bo'lishadi." },
+        { "q": "O'zbekistonda qimmatli qog'ozlar bozori qanday tartibga solinadi?", "a": "O'zbekistonda qimmatli qog'ozlar bozori Moliya vazirligi, maxsus tashkil etilgan kapital bozorini rivojlantirish departamenti (KBRD) tomonidan tartibga solinadi." },
+        { "q": "Kim fond bozorining ishtirokchisi sanaladi?", "a": "Fond bozorida uch turdagi ishtirokchilar mavjud: Emitentlar (o'z qimmatli qog'ozlarini chiqaruvchi va sotuvchi kompaniyalar), Investorlar (qimmatli qog'ozlarni xarid qiluvchi shaxslar), Professional ishtirokchilar (birja, brokerlar, banklar, depozitariy va nazoratchilar)." },
+        { "q": "Fond birjasi nima uchun kerak va u qanday ishlaydi?", "a": "Fond birjasi qimmatli qog'ozlarni chiqarish hamda sotib olish va sotish amalga oshiriladigan savdo maydonchasi sanaladi. Birjalar evaziga qimmatli qog'ozlarga adolatli narx belgilash va ishtirokchilar savdo operatsiyalarini tez va xavfsiz amalga oshirishlari ta'minlanadi." },
+        { "q": "O'zbekistonda fond birjasi bormi?", "a": "Ha, 'Toshkent' respublika fond birjasi (RFB) 1994-yilda tashkil etilgan bo'lib, mamlakatdagi yagona fond birjasi sanaladi. Birja sayti: uzse.uz" }
+      ]
+    },
+    {
+      "category": "Qimmatli qog'ozlar",
+      "questions": [
+        { "q": "Qimmatli qog'ozlar nima?", "a": "Qimmatli qog'ozlar – egasiga mulkiy yoki moliyaviy huquqlarni beruvchi hujjatlar. Bugungi kunda aksariyat qimmatli qog'ozlar raqamli shaklda mavjud. Ular o'z egalariga kompaniya daromadining bir qismini olish va uning faoliyatida ishtirok etish huquqini beradi." },
+        { "q": "O'zbekistonda xususiy investorlar uchun qanday qimmatli qog'ozlar mavjud?", "a": "'Toshkent' RFBda xususiy investorlar o'zbek kompaniyalari tomonidan chiqarilgan aksiyalar va obligatsiyalarni xarid qilishlari mumkin." },
+        { "q": "Aksiya nima?", "a": "Aksiya – bu kompaniyaning ulushi. Aksiyalar egalari kompaniyaning sheriklariga aylanadi. Ular dividend olish va aksiyadorlar yig'ilishida ovoz berish orqali kompaniyani boshqarishda ishtirok etishlari mumkin. Aksiyalarning ikki turi mavjud: oddiy va imtiyozli." },
+        { "q": "Oddiy va imtiyozli aksiyalar o'rtasidagi farq nimada?", "a": "Oddiy aksiyalar ovoz berish huquqini beradi va dividendlari kompaniya foydasiga bog'liq. Imtiyozli aksiyalar ovoz berish huquqini bermaydi, lekin nominal qiymatidan qat'iy foizda dividend olish huquqini beradi va kompaniya tugatilganda mulkni birinchi navbatda olish huquqiga ega." }
+      ]
+    }
+  ],
+  "lastUpdated": "2026-05-21"
+}
