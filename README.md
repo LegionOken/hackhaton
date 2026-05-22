@@ -73,4 +73,4 @@ Server ishga tushgach, brauzerda `http://localhost:5000` manziliga kiring.
 Fond bozori va aksiyalar savdosi yuqori moliyaviy xavf bilan bog'liq. Arbitra AI bergan tavsiyalar faqat axborot maqsadida beriladi va moliyaviy maslahat hisoblanmaydi.
 
 ---
-Developed with ❤️ for AI Hackathon 2026.
+Developed by Logos❤️ for AI Hackathon 2026.
