@@ -72,5 +72,7 @@ Server ishga tushgach, brauzerda `http://localhost:5000` manziliga kiring.
 ## ⚠️ Ogohlantirish
 Fond bozori va aksiyalar savdosi yuqori moliyaviy xavf bilan bog'liq. Arbitra AI bergan tavsiyalar faqat axborot maqsadida beriladi va moliyaviy maslahat hisoblanmaydi.
 
+## Real-time server
+https://agromate.pythonanywhere.com/
 ---
 Developed by Logos❤️ for AI Hackathon 2026.
