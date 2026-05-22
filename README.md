@@ -1,6 +1,6 @@
 # Arbitra AI — O'zbekiston Fond Bozori Moliyaviy Razvedkasi
 
-![Arbitra Banner](logo_fixed.jpg)
+![Arbitra Banner](banner.jpg)
 
 **Arbitra AI** — bu O'zbekiston fond bozori (UZSE) ma'lumotlarini real vaqt rejimida tahlil qilish va investorlarga aqlli signallar berish uchun yaratilgan yuqori texnologik B2B platforma. 
 
