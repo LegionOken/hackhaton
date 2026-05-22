@@ -36,7 +36,8 @@ def chat():
 
     full_prompt = f"{data['context']}\n\nFoydalanuvchi savoli: {data['message']}\n\nJavob:"
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    model = "gemini-2.0-flash"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
 
     try:
         with httpx.Client(timeout=60) as client:

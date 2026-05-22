@@ -1,4 +1,4 @@
-# Eco Us — Kelajak rejalar va takliflar
+# Arbitra — Kelajak rejalar va takliflar
 
 ## 1. Real ma'lumotlar integratsiyasi
 - [ ] **Puppeteer/Playwright orqali real vaqt rejimida ma'lumot yig'ish** — jett.uz, uzse.uz dan aksiyalar narxlari

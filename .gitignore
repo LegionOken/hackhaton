@@ -4,3 +4,6 @@ frontend/parser/node_modules/
 *.log
 .DS_Store
 Thumbs.db
+.env
+__pycache__/
+*.pyc

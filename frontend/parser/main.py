@@ -78,7 +78,7 @@ STOCK_META = [
     # Investitsiya
     {"key": "invest", "name": "Invest Finance", "ticker": "INFN", "sector": "Moliya", "basePrice": 3470, "vol": 0.019, "trend": 0.0004},
     # Boshqa
-    {"key": "eco", "name": "Eco Us", "ticker": "ECOU", "sector": "Texnologiya", "basePrice": 5200, "vol": 0.030, "trend": 0.0010},
+    {"key": "eco", "name": "Arbitra", "ticker": "ECOU", "sector": "Texnologiya", "basePrice": 5200, "vol": 0.030, "trend": 0.0010},
 ]
 
 def seeded_rand(seed, min_v=0, max_v=1):
